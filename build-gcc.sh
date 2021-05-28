@@ -30,6 +30,7 @@ download_resources() {
   echo "Downloading Pre-requisites"
   git clone git://sourceware.org/git/binutils-gdb.git -b master binutils --depth=1
   git clone git://gcc.gnu.org/git/gcc.git -b releases/gcc-11 gcc --depth=1
+  git clone https://github.com/facebook/zstd -b dev zstd --depth=1
   cd ${WORK_DIR}
 }
 
@@ -77,7 +78,8 @@ build_gcc() {
     --with-gnu-as \
     --with-gnu-ld \
     --with-sysroot \
-    --with-zstd
+    --with-zstd \
+    --with-zstd-include=../zstd/lib
 
   make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" all-gcc -j$(($(nproc --all) + 2))
   make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" all-target-libgcc -j$(($(nproc --all) + 2))
