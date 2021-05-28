@@ -85,6 +85,25 @@ build_gcc() {
 
 }
 
+push_gcc() {
+    if [ $TARGET = "aarch64-elf" ]
+	git clone https://github.com/silont-project/aarch64-elf-gcc /drone/src/gcc_push -b arm64/10
+	rm -rf /drone/src/gcc_push/*
+	cp /drone/src/aarch64-elf/* /drone/src/gcc_push -rf
+	cd /drone/src/gcc_push && git add .
+	git commit -s -m ""[DroneCI]: NGenToD GCC $(date +%d%m%y)""
+	git push -q https://$GH_TOKEN@github.com/silont-project/aarch64-elf-gcc.git arm64/10
+    else
+        git clone https://github.com/silont-project/arm-eabi-gcc /drone/src/gcc_push -b arm/10
+        rm -rf /drone/src/gcc_push/*
+        cp /drone/src/arm-eabi/* /drone/src/gcc_push -rf
+        cd /drone/src/gcc_push && git add .
+        git commit -s -m ""[DroneCI]: NGenToD GCC $(date +%d%m%y)""
+        git push -q https://$GH_TOKEN@github.com/silont-project/arm-eabi-gcc.git arm/10
+}
+
 download_resources
 build_binutils
 build_gcc
+
+push_gcc
