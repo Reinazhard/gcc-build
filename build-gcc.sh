@@ -87,6 +87,8 @@ build_gcc() {
 
 push_gcc() {
 
+    git config --global user.name Reinazhard
+    git config --global user.email reinazhard@gmail.com
     if [ $TARGET = "aarch64-elf" ]
      then
 	git clone https://github.com/silont-project/aarch64-elf-gcc /drone/src/gcc_push -b arm64/10
