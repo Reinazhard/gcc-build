@@ -1,0 +1,39 @@
+---
+kind: pipeline
+name: NGenToD GCC ARM64
+
+clone:
+  disable: true
+
+steps:
+- name: val
+  image: archlinux:base-devel
+  environment:
+      GH_TOKEN:
+        from_secret: GH_TOKEN
+  commands:
+    - "export GH_TOKEN"
+    - curl -LO "https://repo.archlinuxcn.org/x86_64/glibc-linux4-2.33-4-x86_64.pkg.tar.zst" && bsdtar -C / -xvf "glibc-linux4-2.33-4-x86_64.pkg.tar.zst"
+    - pacman -Sy base-devel wget clang cmake git libc++ lld lldb ninja --noconfirm
+    - wget https://raw.githubusercontent.com/Reinazhard/gcc-build/main/build-gcc.sh && chmod +x build-gcc.sh
+    - ./build-gcc.sh -a arm64
+
+---
+kind: pipeline
+name: NGenToD GCC ARM32
+
+clone:
+  disable: true
+
+steps:
+- name: val
+  image: archlinux:base-devel
+  environment:
+      GH_TOKEN:
+        from_secret: GH_TOKEN
+  commands:
+    - "export GH_TOKEN"
+    - curl -LO "https://repo.archlinuxcn.org/x86_64/glibc-linux4-2.33-4-x86_64.pkg.tar.zst" && bsdtar -C / -xvf "glibc-linux4-2.33-4-x86_64.pkg.tar.zst"
+    - pacman -Sy base-devel wget clang cmake git libc++ lld lldb ninja --noconfirm
+    - wget https://raw.githubusercontent.com/Reinazhard/gcc-build/main/build-gcc.sh && chmod +x build-gcc.sh
+    - ./build-gcc.sh -a arm
