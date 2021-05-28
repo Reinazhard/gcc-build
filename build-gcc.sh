@@ -29,7 +29,7 @@ echo "Building Bare Metal Toolchain for ${arch} with ${TARGET} as target"
 download_resources() {
   echo "Downloading Pre-requisites"
   git clone git://sourceware.org/git/binutils-gdb.git -b master binutils --depth=1
-  git clone https://git.linaro.org/toolchain/gcc.git -b master gcc --depth=1
+  git clone https://git.linaro.org/toolchain/gcc.git -b releases/gcc-10 gcc --depth=1
   cd ${WORK_DIR}
 }
 
@@ -86,20 +86,26 @@ build_gcc() {
 }
 
 push_gcc() {
+
     if [ $TARGET = "aarch64-elf" ]
+     then
 	git clone https://github.com/silont-project/aarch64-elf-gcc /drone/src/gcc_push -b arm64/10
 	rm -rf /drone/src/gcc_push/*
-	cp /drone/src/aarch64-elf/* /drone/src/gcc_push -rf
+	cp /drone/gcc-arm64/* /drone/src/gcc_push -rf
 	cd /drone/src/gcc_push && git add .
-	git commit -s -m ""[DroneCI]: NGenToD GCC $(date +%d%m%y)""
-	git push -q https://$GH_TOKEN@github.com/silont-project/aarch64-elf-gcc.git arm64/10
-    else
+	git commit -s -m "[DroneCI]: NGenToD GCC $(date +%d%m%y)"
+	git push -q https://$GH_TOKEN@github.com/silont-project/aarch64-elf-gcc.git
+    fi
+
+    if [ $TARGET = "arm-eabi" ]
+     then
         git clone https://github.com/silont-project/arm-eabi-gcc /drone/src/gcc_push -b arm/10
         rm -rf /drone/src/gcc_push/*
-        cp /drone/src/arm-eabi/* /drone/src/gcc_push -rf
+        cp /drone/gcc-arm/* /drone/src/gcc_push -rf
         cd /drone/src/gcc_push && git add .
-        git commit -s -m ""[DroneCI]: NGenToD GCC $(date +%d%m%y)""
-        git push -q https://$GH_TOKEN@github.com/silont-project/arm-eabi-gcc.git arm/10
+        git commit -s -m "[DroneCI]: NGenToD GCC $(date +%d%m%y)"
+        git push -q https://$GH_TOKEN@github.com/silont-project/arm-eabi-gcc.git
+    fi
 }
 
 download_resources
