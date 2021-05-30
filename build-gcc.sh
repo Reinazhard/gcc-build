@@ -93,7 +93,8 @@ build_gcc() {
     --with-gnu-as \
     --with-gnu-ld \
     --with-sysroot \
-    --with-zstd="$PREFIX" \
+    --with-zstd=$PREFIX \
+    --with-zstd-include=$PREFIX/include \
     --with-zstd-lib=$PREFIX/lib
 
   make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" all-gcc -j$(($(nproc --all) + 2))
