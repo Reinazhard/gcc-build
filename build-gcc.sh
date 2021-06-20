@@ -85,33 +85,6 @@ build_gcc() {
 
 }
 
-push_gcc() {
-
-    git config --global user.name Reinazhard
-    git config --global user.email reinazhard@gmail.com
-    if [ $TARGET = "aarch64-elf" ]
-     then
-	git clone https://github.com/silont-project/aarch64-elf-gcc /drone/src/gcc_push -b arm64/10
-	rm -rf /drone/src/gcc_push/*
-	cp /drone/gcc-arm64/* /drone/src/gcc_push -rf
-	cd /drone/src/gcc_push && git add .
-	git commit -s -m "[DroneCI]: NGenToD GCC $(date +%d%m%y)"
-	git push -q https://$GH_TOKEN@github.com/silont-project/aarch64-elf-gcc.git
-    fi
-
-    if [ $TARGET = "arm-eabi" ]
-     then
-        git clone https://github.com/silont-project/arm-eabi-gcc /drone/src/gcc_push -b arm/10
-        rm -rf /drone/src/gcc_push/*
-        cp /drone/gcc-arm/* /drone/src/gcc_push -rf
-        cd /drone/src/gcc_push && git add .
-        git commit -s -m "[DroneCI]: NGenToD GCC $(date +%d%m%y)"
-        git push -q https://$GH_TOKEN@github.com/silont-project/arm-eabi-gcc.git
-    fi
-}
-
 download_resources
 build_binutils
 build_gcc
-
-push_gcc
