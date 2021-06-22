@@ -16,7 +16,7 @@ steps:
     - curl -LO "https://repo.archlinuxcn.org/x86_64/glibc-linux4-2.33-4-x86_64.pkg.tar.zst" && bsdtar -C / -xvf "glibc-linux4-2.33-4-x86_64.pkg.tar.zst"
     - pacman -Sy base-devel wget clang cmake git libc++ lld lldb ninja --noconfirm
     - ./build-gcc.sh -a arm64
-    - ./build-lld.sh
+    - ./build-lld.sh -a arm64
     - ./push.sh
 
 ---
@@ -37,6 +37,6 @@ steps:
     - curl -LO "https://repo.archlinuxcn.org/x86_64/glibc-linux4-2.33-4-x86_64.pkg.tar.zst" && bsdtar -C / -xvf "glibc-linux4-2.33-4-x86_64.pkg.tar.zst"
     - pacman -Sy base-devel wget clang cmake git libc++ lld lldb ninja --noconfirm
     - ./build-gcc.sh -a arm
-    - ./build-lld.sh
+    - ./build-lld.sh -a arm
     - ./push.sh
 
