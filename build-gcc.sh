@@ -45,8 +45,7 @@ build_binutils() {
     --disable-docs \
     --disable-werror \
     --disable-gdb \
-    --enable-gold \
-    --with-pkgversion="Ngentod BinUtils"
+    --enable-gold 
   make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" -j$(($(nproc --all) + 2))
   make install -j$(($(nproc --all) + 2))
   cd ../
@@ -73,7 +72,7 @@ build_gcc() {
     --disable-docs \
     --enable-default-ssp \
     --enable-languages=c,c++ \
-    --with-pkgversion="Ngentod GCC" \
+    --with-pkgversion="Menrva GCC" \
     --with-newlib \
     --with-gnu-as \
     --with-gnu-ld \
