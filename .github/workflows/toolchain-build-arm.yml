@@ -20,15 +20,15 @@ jobs:
     - name: Set build date
       id: get-date
       run: |
-        sudo timedatectl set-timezone Asia/Kolkata
+        sudo timedatectl set-timezone Asia/Jakarta
         echo ::set-output name=date::$(/bin/date -u "+%Y%m%d")
     - name: Build & Push
       run: |
-        alias gcc=gcc-10
-        alias g++=g++-10
+        alias gcc=gcc-11
+        alias g++=g++-11
         git config --global user.name "${GITHUB_USER}"
         git config --global user.email "${GITHUB_EMAIL}"
-        git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/mvaisakh/gcc-arm ../gcc-arm -b gcc-master
+        git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/silont-project/arm-eabi-gcc ../gcc-arm -b arm/11
         rm -rf ../gcc-arm/*
         chmod a+x build-*.sh
         ./build-gcc.sh -a arm
@@ -40,7 +40,7 @@ jobs:
         git add . -f
         git commit -as -m "Import ARM GCC ${{ steps.get-date.outputs.date }}" -m "Build completed on: $(/bin/date)" -m "Configuration: $(/bin/cat /tmp/gcc-arm-version)" -m "LLD: $(/bin/cat /tmp/lld-arm-version)"
         git gc
-        git push origin gcc-master -f
+        git push origin arm/11 -f
       env:
         GITHUB_EMAIL: ${{ secrets.EMAIL }}
         GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
