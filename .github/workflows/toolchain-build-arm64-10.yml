@@ -28,9 +28,10 @@ jobs:
         alias g++=g++-11
         git config --global user.name "${GITHUB_USER}"
         git config --global user.email "${GITHUB_EMAIL}"
-        git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/silont-project/aarch64-elf-gcc ../gcc-arm64 -b arm64/11
+        git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/silont-project/aarch64-elf-gcc ../gcc-arm64 -b arm64/10
         rm -rf ../gcc-arm64/*
         chmod a+x build-*.sh
+        sed -i 's/s\/gcc-11/s\/gcc-10/g' build-gcc.sh
         ./build-gcc.sh -a arm64
         sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
         ./build-lld.sh -a arm64
@@ -40,7 +41,7 @@ jobs:
         git add . -f
         git commit -as -m "Import ARM64 GCC ${{ steps.get-date.outputs.date }}" -m "Build completed on: $(/bin/date)" -m "Configuration: $(/bin/cat /tmp/gcc-version)" -m "LLD: $(/bin/cat /tmp/lld-arm64-version)"
         git gc
-        git push origin arm64/11 -f
+        git push origin arm64/10 -f
       env:
         GITHUB_EMAIL: ${{ secrets.EMAIL }}
         GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
