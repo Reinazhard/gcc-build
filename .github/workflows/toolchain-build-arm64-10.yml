@@ -32,9 +32,11 @@ jobs:
         rm -rf ../gcc-arm64/*
         chmod a+x build-*.sh
         sed -i 's/s\/gcc-11/s\/gcc-10/g' build-gcc.sh
+        script_dir=$(pwd)
         ./build-gcc.sh -a arm64
         sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
         ./build-lld.sh -a arm64
+        bash "$script_dir/strip-binaries.sh"
         cd ../gcc-arm64
         ./bin/aarch64-elf-gcc -v 2>&1 | tee /tmp/gcc-version
         ./bin/aarch64-elf-ld.lld -v 2>&1 | tee /tmp/lld-arm64-version

@@ -31,6 +31,7 @@ jobs:
         git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/silont-project/arm-eabi-gcc ../gcc-arm -b arm/10
         rm -rf ../gcc-arm/*
         chmod a+x build-*.sh
+        script_dir=$(pwd)
         sed -i 's/s\/gcc-11/s\/gcc-10/g' build-gcc.sh
         ./build-gcc.sh -a arm
         sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
