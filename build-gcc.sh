@@ -42,10 +42,8 @@ build_zstd() {
   cmake ../zstd/build/cmake/ -DZSTD_BUILD_SHARED=OFF \
     -DZSTD_LZ4_SUPPORT=ON \
     -DZSTD_LZMA_SUPPORT=ON \
-    -DZSTD_ZLIB_SUPPORT=ON \
-    -DCMAKE_INSTALL_PREFIX:PATH="$PREFIX"
+    -DZSTD_ZLIB_SUPPORT=ON 
   make CFLAGS="-flto -O3" CXXFLAGS="-flto -O3" -j$(($(nproc --all) + 2))
-  make install -j$(($(nproc --all) + 2))
   cd ../
 }
 
@@ -93,9 +91,7 @@ build_gcc() {
     --with-gnu-as \
     --with-gnu-ld \
     --with-sysroot \
-    --with-zstd=$PREFIX \
-    --with-zstd-include=$PREFIX/include \
-    --with-zstd-lib=$PREFIX/lib
+    --with-zstd=${WORK_DIR}/zstd/zstd
 
   make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" all-gcc -j$(($(nproc --all) + 2))
   make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" all-target-libgcc -j$(($(nproc --all) + 2))
